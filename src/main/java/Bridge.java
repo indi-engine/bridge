@@ -144,6 +144,9 @@ public class Bridge {
         // Run engine
         log.info("Debezium engine started, waiting for CDC events...");
         engine.run();
+
+        // Exit on completion or failure
         log.info("Bridge exiting.");
+        System.exit(0);
     }
 }
