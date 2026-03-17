@@ -1,0 +1,7 @@
+{
+  "name": "indi-engine/bridge",
+  "description": "Indi Engine CDC bridge service (Debezium to RabbitMQ)",
+  "type": "library",
+  "license": "proprietary",
+  "require": {}
+}

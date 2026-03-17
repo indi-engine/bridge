@@ -36,6 +36,8 @@ jobs:
         run: |
           mkdir dist
           cp target/bridge.jar dist/
+          cp debezium.properties.dist dist/
+          cp logback.xml dist/
           zip -r bridge-${{ steps.version.outputs.new_tag }}.zip dist
 
       - name: Create GitHub release
