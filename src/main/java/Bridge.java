@@ -26,7 +26,8 @@ public class Bridge {
 
         // Load props from file at first, if possible, and then merge CLI ones on top
         var props = new Properties();
-        try (var fis = new FileInputStream(System.getProperty("props.path", "properties"))) { props.load(fis); }
+        try (var fis = new FileInputStream(System.getProperty("props.path", "debezium.properties"))) { props.load(fis); }
+        catch (Exception e) {}
         props.putAll(System.getProperties());
 
         // Setup RabbitMQ connection
