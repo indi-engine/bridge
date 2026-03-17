@@ -44,6 +44,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.new_tag }}
-          files: |
-            target/bridge.jar
-            bridge-${{ steps.version.outputs.new_tag }}.zip
+          files: bridge-${{ steps.version.outputs.new_tag }}.zip
+
