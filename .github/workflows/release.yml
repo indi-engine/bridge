@@ -38,11 +38,11 @@ jobs:
           cp target/bridge.jar dist/
           cp debezium.properties.dist dist/
           cp logback.xml dist/
-          zip -r bridge-${{ steps.version.outputs.new_tag }}.zip dist
+          zip -r bridge.zip dist
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.new_tag }}
-          files: bridge-${{ steps.version.outputs.new_tag }}.zip
+          files: bridge.zip
 
