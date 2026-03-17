@@ -1,0 +1,47 @@
+name: Build and Release Bridge
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine next version
+        id: version
+        uses: anothrNick/github-tag-action@1.70.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+          WITH_V: true
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Build jar
+        run: mvn -B -DskipTests package
+
+      - name: Prepare release package
+        run: |
+          mkdir dist
+          cp target/bridge.jar dist/
+          zip -r bridge-${{ steps.version.outputs.new_tag }}.zip dist
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.new_tag }}
+          files: |
+            target/bridge.jar
+            bridge-${{ steps.version.outputs.new_tag }}.zip
