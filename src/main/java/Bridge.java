@@ -92,6 +92,9 @@ public class Bridge {
                             }
                         });
 
+                        // Skip if nothing actually changed
+                        if (old.isEmpty()) return;
+
                         // Set values of 'type', 'data' and 'old' keys
                         out.put("type", "update");
                         out.set("data", now);
