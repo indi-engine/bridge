@@ -76,11 +76,14 @@ public class Bridge {
                     // Shortcuts
                     var src = map.readTree(valueJson);
                     var out = map.createObjectNode();
-                    var type = src.get("op");
+                    var typeNode = src.get("op");
                     var database = src.at("/source/db").asText();
 
                     // Skip events with no 'op' field (heartbeats, schema changes, etc.)
-                    if (type == null) return;
+                    if (typeNode == null) return;
+
+                    // Get operation type name
+                    var type = typeNode.asText();
 
                     // Set database and table names
                     out.put("database", database);
