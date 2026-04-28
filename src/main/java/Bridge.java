@@ -70,11 +70,17 @@ public class Bridge {
                 // Else start preparing the value
                 try {
 
+                    // Print raw CDC-event, if debugging is enabled
+                    if (debug) log.info("Raw event: {}", valueJson);
+
                     // Shortcuts
                     var src = map.readTree(valueJson);
                     var out = map.createObjectNode();
-                    var type = src.get("op").asText();
+                    var type = src.get("op");
                     var database = src.at("/source/db").asText();
+
+                    // Skip events with no 'op' field (heartbeats, schema changes, etc.)
+                    if (type == null) return;
 
                     // Set database and table names
                     out.put("database", database);
