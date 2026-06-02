@@ -6,12 +6,14 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.MessageProperties;
 
 public class Bridge {
 
@@ -24,10 +26,14 @@ public class Bridge {
     // Main script
     public static void main(String[] args) throws Exception {
 
-        // Load props from file at first, if possible, and then merge CLI ones on top
+        // Setup props
         var props = new Properties();
+
+        // NOTE: loading props from file mainly meant for reference and debugging rather than for regular usage
         try (var fis = new FileInputStream(System.getProperty("props.path", "debezium.properties"))) { props.load(fis); }
         catch (Exception e) {}
+
+        // Merge CLI props in
         props.putAll(System.getProperties());
 
         // Setup RabbitMQ connection
@@ -41,7 +47,8 @@ public class Bridge {
         // Setup channel and declare exchange where CDC-event will be pushed into
         final var channel = rabbit.createChannel();
         var exchange = props.getProperty("rabbitmq.exchange");
-        channel.exchangeDeclare(exchange, "direct", false);
+        channel.exchangeDeclare(exchange, "direct", true);
+        channel.confirmSelect();
 
         // Debug flag
         var debug = Boolean.parseBoolean(props.getProperty("debug", "false"));
@@ -122,7 +129,16 @@ public class Bridge {
                     var json = map.writeValueAsString(out);
 
                     // Push to RabbitMQ exchange
-                    channel.basicPublish(exchange, database, null, json.getBytes());
+                    channel.basicPublish(
+                        exchange,
+                        database,
+                        true,
+                        MessageProperties.PERSISTENT_TEXT_PLAIN,
+                        json.getBytes(StandardCharsets.UTF_8)
+                    );
+
+                    // Log missing confirmation for debugging
+                    if (!channel.waitForConfirms()) log.error("Message not confirmed", json);
 
                     // Print resulting json of a CDC-event, if debugging is enabled
                     if (debug) log.info("CDC event: {}", json);
