@@ -29,7 +29,7 @@ public class Bridge {
         // Setup props
         var props = new Properties();
 
-        // NOTE: loading props from file mainly meant for reference and debugging rather than for regular usage
+        // NOTE: loading props from file mainly meant for reference and debugging rather than for production usage
         try (var fis = new FileInputStream(System.getProperty("props.path", "debezium.properties"))) { props.load(fis); }
         catch (Exception e) {}
 
