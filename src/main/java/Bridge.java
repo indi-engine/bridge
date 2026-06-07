@@ -94,6 +94,7 @@ public class Bridge {
 
                     // Set database and table names
                     out.put("database", database);
+                    out.put("schema", src.at("/source/schema").asText());
                     out.put("table", src.at("/source/table").asText());
 
                     // If it's UPDATE-event
