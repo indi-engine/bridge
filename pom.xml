@@ -9,6 +9,7 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <debezium.version>3.5.2.Final</debezium.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -26,22 +27,22 @@
         <dependency>
             <groupId>io.debezium</groupId>
             <artifactId>debezium-api</artifactId>
-            <version>2.6.1.Final</version>
+            <version>${debezium.version}</version>
         </dependency>
         <dependency>
             <groupId>io.debezium</groupId>
             <artifactId>debezium-embedded</artifactId>
-            <version>2.6.1.Final</version>
+            <version>${debezium.version}</version>
         </dependency>
         <dependency>
             <groupId>io.debezium</groupId>
             <artifactId>debezium-connector-mysql</artifactId>
-            <version>2.6.1.Final</version>
+            <version>${debezium.version}</version>
         </dependency>
         <dependency>
             <groupId>io.debezium</groupId>
             <artifactId>debezium-connector-postgres</artifactId>
-            <version>2.6.1.Final</version>
+            <version>${debezium.version}</version>
         </dependency>
         <dependency>
             <groupId>com.rabbitmq</groupId>

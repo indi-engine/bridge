@@ -13,7 +13,7 @@ database.server.name=indi-engine
 database.include.list=custom
 database.history.skip.unparseable.ddl=true
 
-snapshot.mode=schema_only
+snapshot.mode=no_data
 include.schema.changes=false
 
 offset.storage=org.apache.kafka.connect.storage.FileOffsetBackingStore
