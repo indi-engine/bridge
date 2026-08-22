@@ -34,3 +34,12 @@ rabbitmq.password=guest
 rabbitmq.exchange=indi-engine.custom
 
 debug=false
+
+# SQL Server alternative:
+# connector.class=io.debezium.connector.sqlserver.SqlServerConnector
+# database.hostname=sqlserver
+# database.port=1433
+# database.names=custom
+# schema.include.list=system,dbo
+# database.encrypt=true
+# database.trustServerCertificate=true
